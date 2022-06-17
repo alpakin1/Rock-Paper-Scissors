@@ -1,4 +1,11 @@
 const myArray = ["Rock!", "Paper!", "Scissors!"];
+let playerCounter = 0;
+let computerCounter = 0;
+
+const rockButton = document.querySelector('#rockButton');
+const paperButton = document.querySelector('#paperButton');
+const scissorsButton = document.querySelector('#scissorsButton');
+const winLose = document.querySelector('#winLoseDisplay');
 
 function computerPlay() {
     return myArray[Math.floor(Math.random() * myArray.length)]
@@ -6,40 +13,49 @@ function computerPlay() {
 
 function playRound (playerSelection, computerSelection) {
     if (playerSelection.toUpperCase() == "ROCK" && computerSelection == "Scissors!") {
-        return ("You win!"); 
+        playerCounter += 1;
     } else if (playerSelection.toUpperCase() == "ROCK" && computerSelection == "Paper!") {
-        return ("You lose!");
+        computerCounter += 1;
     } else if (playerSelection.toUpperCase() == "PAPER" && computerSelection == "Scissors!") {
-        return ("You lose!"); 
+        computerCounter += 1;
     } else if (playerSelection.toUpperCase() == "PAPER" && computerSelection == "Rock!") {
-        return ("You win!");
+        playerCounter += 1; 
     } else if (playerSelection.toUpperCase() == "SCISSORS" && computerSelection == "Rock!") {
-        return ("You lose!");
+        computerCounter += 1;
     } else if (playerSelection.toUpperCase() == "SCISSORS" && computerSelection == "Paper!") {
-        return ("You win!");
-    } else 
-        return ("Tie!");
-}
-
-
-
-function game() {
-    let playerCounter = 0;
-    let computerCounter = 0;
-    for(let i = 0; i < 5; i++) {
-        const playerSelection = prompt("Enter here.");
-        const computerSelection = computerPlay();
-        const oneRound = playRound(playerSelection, computerSelection)
-        console.log(oneRound);
-        if (oneRound == "You win!") {
-            playerCounter += 1;
-        } else if (oneRound == "You lose!") {
-            computerCounter += 1;
-        }
+        playerCounter += 1; 
     }
+    let counter = document.querySelector('#counter');
+    counter.textContent = `Your Score = ${playerCounter}, Computer's Score = ${computerCounter}`;
 
-    console.log(`Your score = ${playerCounter}`);
-    console.log(`Opponent's score = ${computerCounter}`);
 }
 
-game();
+function checkResult () {
+    winLose.textContent = '';
+    counter.textContent = `Your Score = ${playerCounter}, Computer's Score = ${computerCounter}`;
+    if (playerCounter === 5) {
+        winLose.textContent = 'YOU WIN!'
+        clearAll()
+    } else if (computerCounter === 5) {
+        winLose.textContent = 'YOU LOSE!'
+        clearAll()
+    }
+}
+
+function clearAll () {
+    playerCounter = 0;
+    computerCounter = 0;
+} 
+
+rockButton.addEventListener('click', () => {
+    playRound('ROCK', computerPlay())
+    checkResult()
+})
+paperButton.addEventListener('click', () => {
+    playRound('PAPER', computerPlay())
+    checkResult()
+})
+scissorsButton.addEventListener('click', () => {
+    playRound('SCISSORS', computerPlay())
+    checkResult()
+})
